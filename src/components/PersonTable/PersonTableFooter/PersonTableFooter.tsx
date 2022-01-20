@@ -48,6 +48,7 @@ const PersonTableFooter: FC<Props> = ({
         >
           prev
         </MyButton>
+        <span> {currentPage} </span>
         <MyButton
           size={"small"}
           disabled={lastPage == currentPage}
