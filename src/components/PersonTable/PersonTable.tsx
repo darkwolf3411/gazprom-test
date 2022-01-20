@@ -1,109 +1,107 @@
 import React, { FC, useState } from "react";
-import { usePagination } from "../../hooks/pagination";
-import { useSearch } from "../../hooks/search";
-import { useSort } from "../../hooks/sort";
+import { usePersons } from "../../hooks/usePerson.hook";
 import { IPerson } from "../../models/Person";
+import PersonTableBody from "./PersonTableBody/PersonTableBody";
+import PersonTableFooter from "./PersonTableFooter/PersonTableFooter";
+import PersonTableHeader from "./PersonTableHeader/PersonTableHeader";
+//@ts-ignore
+import styles from "./personTable.module.scss";
 
-interface PersonTablePropsInterface
-  extends React.TableHTMLAttributes<HTMLTableElement> {
+interface Props extends React.TableHTMLAttributes<HTMLTableElement> {
   data: IPerson[];
   tableName: string;
   pagination?: boolean;
   tableHeadNames: string[];
+  tableSortKey: string[];
 }
 
 interface PaginationSettings {
   limit: number;
   page: number;
 }
+export interface SortSettings {
+  sortName: string;
+  sortDirection: boolean;
+}
 
-const PersonTable: FC<PersonTablePropsInterface> = ({
-  data: persons,
+const PersonTable: FC<Props> = ({
+  data,
   tableHeadNames,
+  tableSortKey,
   tableName,
   pagination,
-  ...props
 }) => {
   const [paginationSettings, setPaginationSettings] =
     useState<PaginationSettings>({
       limit: 5,
       page: 1,
     });
-  const [searchValue, setSearchValue] = useState<string>('')
+  const [searchValue, setSearchValue] = useState<string>("");
 
-  const [sortField, setSortField] = useState<string>('')
+  const [sortSettings, setSortSettings] = useState<SortSettings>({
+    sortName: "id",
+    sortDirection: true,
+  });
 
-  const [numbersPageArray, paginateArray] = usePagination(
-    persons,
+  const persons = usePersons(
+    data,
     paginationSettings.limit,
-    paginationSettings.page
-    );
-  const personsArray = useSearch(paginateArray,searchValue)
+    paginationSettings.page,
+    searchValue,
+    sortSettings.sortName,
+    sortSettings.sortDirection
+  );
 
-  const sortedPersonArray = useSort(personsArray,sortField)
+  const searchHandler = (event: string) => {
+    setSearchValue(event);
+  };
+  const tableHeadHandler = (sortName: string) => {
+    setSortSettings({
+      ...sortSettings,
+      sortName,
+      sortDirection: !sortSettings.sortDirection,
+    });
+  };
 
-  const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value)
-  }
-  const tableHeadHandler = (fieldName: string) => {
-    setSortField(fieldName)
-  }
-
-  const selectPageSizeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const changeLimitHandler = (limit: number) => {
+    setPaginationSettings({
+      limit,
+      page: 1,
+    });
+  };
+  const changePageHandler = (event: number) => {
     setPaginationSettings({
       ...paginationSettings,
-      page: 1,
-      limit: Number(event.target.value),
+      page: event,
     });
   };
 
   return (
-    <div>
-      <div>
-        <h2>{tableName}</h2>
-        <input 
-        type="text" 
-        placeholder="search" 
-        value={searchValue} 
-        onChange={searchHandler}/>
+    <div className={styles.tableWrapper}>
+      <PersonTableHeader onSearch={searchHandler} tableName={tableName} />
+      <div className={styles.tableBodyWrapper}>
+        {persons.array.length != 0 ? (
+          <PersonTableBody
+            sortSettings={sortSettings}
+            onSelectSort={tableHeadHandler}
+            persons={persons.array}
+            tableHeadNames={tableHeadNames}
+            tableSortKey={tableSortKey}
+          />
+        ) : (
+          <div>
+            <h3>Данные не найдены</h3>
+          </div>
+        )}
       </div>
-      <table {...props}>
-        <thead>
-          <tr>
-            {tableHeadNames.map((tHeadName) => {
-              return <td onClick={()=>{tableHeadHandler(tHeadName)}} key={tHeadName}>{tHeadName}</td>;
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedPersonArray && sortedPersonArray.map((person) => {
-            return (
-              <tr onClick={()=>{alert(person.address)}} key={person.id}>
-                <td>{person.id}</td>
-                <td>{person.first_name}</td>
-                <td>{person.last_name}</td>
-                <td>{person.email}</td>
-                <td>{person.phone}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      {(pagination && sortedPersonArray.length !==0?true:false) && (
-        <div>
-          <select
-            value={paginationSettings.limit}
-            onChange={selectPageSizeHandler}
-          >
-            <option value="5">5</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-          </select>
-          <span>
-            {sortedPersonArray[0].id}-{sortedPersonArray[sortedPersonArray.length - 1].id}
-            of {persons.length}
-          </span>
-        </div>
+      {(pagination && persons.array.length !== 0 ? true : false) && (
+        <PersonTableFooter
+          currentPage={paginationSettings.page}
+          limit={paginationSettings.limit}
+          onSelectChange={changeLimitHandler}
+          totalCount={persons.searchLenght}
+          onPageChange={changePageHandler}
+        />
       )}
     </div>
   );

@@ -18,7 +18,8 @@ const App = () => {
         <PersonTable
           data={data}
           tableName={"Person Table"}
-          tableHeadNames={["Id", "firstName", "lastName", "Email", "Phone"]}
+          tableHeadNames={["ID", "First name", "Last name", "Email", "Phone Number"]}
+          tableSortKey={["Id", "first_name", "last_name", "email", "phone"]}
           pagination={true}
         />
       )}

@@ -1,0 +1,21 @@
+.base{
+    &>input{
+        font-family: 'Outfit', sans-serif;
+        font-size: 15px;
+        padding-right: 26px;
+        box-sizing: border-box;
+        &::placeholder{
+            color: rgb(216, 216, 216)
+        }
+    }
+}
+.search{
+    position: relative;
+    &>i{
+        cursor: pointer;
+        font-size: 20px;
+        position: absolute;
+        top: 0px;
+        right: 7px;
+    }
+}
