@@ -10,28 +10,20 @@ interface Props extends React.TableHTMLAttributes<HTMLTableElement> {
   sortSettings: SortSettings;
   tableSortKey: string[];
   onSelectSort: (event: string) => void;
+  onSelectPerson: (event: IPerson) =>void;
 }
-interface seceltPerson {
-  isSelect: boolean;
-  person: IPerson | null;
-}
+
 const PersonTableBody: FC<Props> = ({
   persons,
   tableHeadNames,
   tableSortKey,
   sortSettings,
   onSelectSort,
+  onSelectPerson,
   ...props
 }) => {
-  const [selecteblPerson, setSelecteblPerson] = useState<seceltPerson>({
-    isSelect: false,
-    person: null,
-  });
-  const onSelectPersonHandler=(event: IPerson)=>{
-    setSelecteblPerson({
-      isSelect: selecteblPerson.person?.id==event.id?!selecteblPerson.isSelect:true,
-      person: event,
-    })
+  const onPersonSelectHandler =(event: IPerson)=>{
+    onSelectPerson(event)
   }
   const directionArrow = (index: number) => {
     if (sortSettings.sortName == tableSortKey[index]) {
@@ -59,21 +51,13 @@ const PersonTableBody: FC<Props> = ({
         <tbody className={styles.tableBodyWrapper}>
           {persons.map((person) => {
             return (
-              <>
-              <tr onClick={()=>{onSelectPersonHandler(person)}} key={person.id}>
+              <tr onClick={()=>{onPersonSelectHandler(person)}} key={person.id}>
                 <td>{person.id}</td>
-                <td>{person.first_name}</td>
-                <td>{person.last_name}</td>
+                <td>{person.firstName}</td>
+                <td>{person.lastName}</td>
                 <td>{person.email}</td>
                 <td>{person.phone}</td>
               </tr>
-              {(selecteblPerson.isSelect && selecteblPerson.person!.id == person.id)&&
-              <tr>
-                <div>
-                  <h3>хуй</h3>
-                </div>
-              </tr>}
-              </>
             );
           })}
         </tbody>

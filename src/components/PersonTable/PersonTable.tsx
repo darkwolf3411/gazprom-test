@@ -6,6 +6,7 @@ import PersonTableFooter from "./PersonTableFooter/PersonTableFooter";
 import PersonTableHeader from "./PersonTableHeader/PersonTableHeader";
 //@ts-ignore
 import styles from "./personTable.module.scss";
+import MoreInformaitonBlock from "./MoreInformaitonBlock/MoreInformaitonBlock";
 
 interface Props extends React.TableHTMLAttributes<HTMLTableElement> {
   data: IPerson[];
@@ -19,6 +20,12 @@ interface PaginationSettings {
   limit: number;
   page: number;
 }
+
+interface seceltPerson {
+  isSelect: boolean;
+  person: IPerson | null;
+}
+
 export interface SortSettings {
   sortName: string;
   sortDirection: boolean;
@@ -37,6 +44,11 @@ const PersonTable: FC<Props> = ({
       page: 1,
     });
   const [searchValue, setSearchValue] = useState<string>("");
+
+  const [selectPerson, setSelectPerson] = useState<seceltPerson>({
+    isSelect: false,
+    person: null,
+  });
 
   const [sortSettings, setSortSettings] = useState<SortSettings>({
     sortName: "id",
@@ -76,6 +88,13 @@ const PersonTable: FC<Props> = ({
     });
   };
 
+  const onSelectPersonHandler=(event: IPerson)=>{
+    setSelectPerson({
+      isSelect: selectPerson.person?.id==event.id?!selectPerson.isSelect:true,
+      person: event,
+    })
+  }
+
   return (
     <div className={styles.tableWrapper}>
       <PersonTableHeader onSearch={searchHandler} tableName={tableName} />
@@ -85,6 +104,7 @@ const PersonTable: FC<Props> = ({
             sortSettings={sortSettings}
             onSelectSort={tableHeadHandler}
             persons={persons.array}
+            onSelectPerson={onSelectPersonHandler}
             tableHeadNames={tableHeadNames}
             tableSortKey={tableSortKey}
           />
@@ -103,6 +123,10 @@ const PersonTable: FC<Props> = ({
           onPageChange={changePageHandler}
         />
       )}
+      {selectPerson.isSelect && 
+      <MoreInformaitonBlock 
+      onClose={()=>setSelectPerson({...selectPerson,isSelect: false})} 
+      person={selectPerson.person!}/>}
     </div>
   );
 };
