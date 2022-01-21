@@ -6,10 +6,11 @@ import styles from "./tHeader.module.scss";
 
 interface Props {
   tableName: string;
+  isLoading: boolean;
   onSearch: (event: string) => void;
 }
 
-const PersonTableHeader: FC<Props> = ({ tableName, onSearch }) => {
+const PersonTableHeader: FC<Props> = ({ isLoading, tableName, onSearch }) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const searchChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -20,8 +21,8 @@ const PersonTableHeader: FC<Props> = ({ tableName, onSearch }) => {
   };
   return (
     <div className={styles.tableHeaderWrapper}>
-      <h2>{tableName}</h2>
-      <div className={styles.tableHeaderSearchWrapper}>
+      <h2>{!isLoading?tableName:"Loading"}</h2>
+      {!isLoading && <div className={styles.tableHeaderSearchWrapper}>
         <MyInput
           inputSize={"medium"}
           search={true}
@@ -37,7 +38,7 @@ const PersonTableHeader: FC<Props> = ({ tableName, onSearch }) => {
         >
           search
         </MyButton>
-      </div>
+      </div>}
     </div>
   );
 };

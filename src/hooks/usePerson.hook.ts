@@ -35,7 +35,7 @@ const search = <T>(array: T[], searchValue: string): T[] => {
 };
 
 export const usePersons = <T>(
-  array: T[],
+  array: T[] | undefined,
   page_size: number,
   page_number: number,
   searchValue: string,
@@ -43,6 +43,9 @@ export const usePersons = <T>(
   sortDirection: boolean
 ): { array: T[]; searchLenght: number } => {
   const result = useMemo(() => {
+    if(!array){
+      return { array: [], searchLenght: 1 }
+    }
     const searchResult = search(
       sort(array, sortName, sortDirection),
       searchValue

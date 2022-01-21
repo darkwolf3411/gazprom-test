@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { usePersons } from "../../hooks/usePerson.hook";
 import { IPerson } from "../../models/Person";
 import PersonTableBody from "./PersonTableBody/PersonTableBody";
@@ -9,9 +9,11 @@ import styles from "./personTable.module.scss";
 import MoreInformaitonBlock from "./MoreInformaitonBlock/MoreInformaitonBlock";
 
 interface Props extends React.TableHTMLAttributes<HTMLTableElement> {
-  data: IPerson[];
+  data: IPerson[] | undefined;
   tableName: string;
   pagination?: boolean;
+  isLoading: boolean;
+  isError: boolean;
   tableHeadNames: string[];
   tableSortKey: string[];
 }
@@ -35,6 +37,8 @@ const PersonTable: FC<Props> = ({
   data,
   tableHeadNames,
   tableSortKey,
+  isLoading,
+  isError,
   tableName,
   pagination,
 }) => {
@@ -55,14 +59,15 @@ const PersonTable: FC<Props> = ({
     sortDirection: true,
   });
 
-  const persons = usePersons(
-    data,
-    paginationSettings.limit,
-    paginationSettings.page,
-    searchValue,
-    sortSettings.sortName,
-    sortSettings.sortDirection
-  );
+
+    const persons = usePersons(
+      data,
+      paginationSettings.limit,
+      paginationSettings.page,
+      searchValue,
+      sortSettings.sortName,
+      sortSettings.sortDirection
+    ) 
 
   const searchHandler = (event: string) => {
     setSearchValue(event);
@@ -97,22 +102,20 @@ const PersonTable: FC<Props> = ({
 
   return (
     <div className={styles.tableWrapper}>
-      <PersonTableHeader onSearch={searchHandler} tableName={tableName} />
+      <PersonTableHeader isLoading={isLoading} onSearch={searchHandler} tableName={tableName} />
       <div className={styles.tableBodyWrapper}>
-        {persons.array.length != 0 ? (
           <PersonTableBody
             sortSettings={sortSettings}
+            isLoading={isLoading}
+            limit={paginationSettings.limit}
+            isError={isError}
             onSelectSort={tableHeadHandler}
             persons={persons.array}
             onSelectPerson={onSelectPersonHandler}
             tableHeadNames={tableHeadNames}
             tableSortKey={tableSortKey}
           />
-        ) : (
-          <div>
-            <h3>Данные не найдены</h3>
-          </div>
-        )}
+        {persons.searchLenght == 0 && <h4>Данные не найдены</h4>}
       </div>
       {(pagination && persons.array.length !== 0 ? true : false) && (
         <PersonTableFooter

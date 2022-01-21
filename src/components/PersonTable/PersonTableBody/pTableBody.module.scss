@@ -1,8 +1,10 @@
 .wrapper{
     display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 0 auto;
     width: 100%;
-    height: fit-content;
+    min-height: 300px;
     max-height: 500px;
     overflow: auto;
     &{
@@ -37,11 +39,20 @@
         cursor: pointer;
     }
 }
-.tableBodyWrapper{
+.bodyBase{
     &>tr{
         cursor: pointer;
         &:hover{
             background:rgb(238, 238, 238);
+        }
+    }
+}
+.preloading{
+    &>tr{
+        cursor: default;
+        background:rgb(245, 245, 245);
+        &:hover{
+            background:rgb(245, 245, 245);
         }
     }
 }

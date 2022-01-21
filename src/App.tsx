@@ -12,17 +12,15 @@ const App = () => {
     <div>
       <button onClick={() => setFetchSize("small")}>Маленький список</button>
       <button onClick={() => setFetchSize("bigger")}>Большой список</button>
-      {isFetching && <h1>Идет загрузка</h1>}
-      {error && <h1>Ошибка при загрузке</h1>}
-      {data && (
-        <PersonTable
+      {<PersonTable
           data={data}
+          isError={!!error}
+          isLoading={isFetching}
           tableName={"Person Table"}
           tableHeadNames={["ID", "First name", "Last name", "Email", "Phone Number"]}
           tableSortKey={["id", "firstName", "lastName", "email", "phone"]}
           pagination={true}
-        />
-      )}
+        />}
     </div>
   );
 };
