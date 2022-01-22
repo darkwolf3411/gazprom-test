@@ -1,11 +1,29 @@
+@import "../../../breakpoints/breakpoints.scss";
+
 .tableHeaderWrapper{
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
     font-family: 'Outfit', sans-serif;
+    h2{
+        min-width: 150px;
+    }
+    @include media("<=430px") {
+        flex-direction: column;
+    }
 }
 .tableHeaderSearchWrapper{
     display: flex;
+    justify-content: flex-end;
     align-items: center;
+    @include media("<=430px") {
+        justify-content: center;
+    }
+    @include media("<=tablet") {
+        width: 100%;
+        input{
+            width: 100%;
+        }
+    }
 }

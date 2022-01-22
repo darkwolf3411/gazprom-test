@@ -114,7 +114,6 @@ const PersonTable: FC<Props> = ({
         onSearch={searchHandler}
         tableName={tableName}
       />
-      <div className={styles.tableBodyWrapper}>
         <PersonTableBody
           sortSettings={sortSettings}
           isLoading={isLoading}
@@ -127,7 +126,6 @@ const PersonTable: FC<Props> = ({
           tableSortKey={tableSortKey}
         />
         {persons.searchLenght == 0 && <h4>No data found</h4>}
-      </div>
       {(pagination && persons.array.length !== 0 ? true : false) && (
         <PersonTableFooter
           currentPage={paginationSettings.page}

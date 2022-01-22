@@ -1,7 +1,7 @@
+@import "../../../breakpoints/breakpoints.scss";
 .wrapper{
     display: flex;
     flex-direction: column;
-    align-items: center;
     margin: 0 auto;
     width: 100%;
     min-height: 300px;
@@ -21,6 +21,10 @@
         background-color: #d6d6d6;
         border-radius: 10px;
         border: 1px solid #ffffff;
+    }
+    @include media("<=tablet") {
+        height: fit-content;
+        max-height: 500px;
     }
 }
 .tableWrapper{
