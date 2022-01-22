@@ -101,13 +101,11 @@ const PersonTable: FC<Props> = ({
   };
 
   useEffect(()=>{
-    if (isLoading) {
       setPaginationSettings({
         ...paginationSettings,
         page: 1
       })
-    }
-  },[isLoading])
+    },[data])
 
   return (
     <div className={styles.tableWrapper}>
