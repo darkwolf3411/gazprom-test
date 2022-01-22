@@ -25,10 +25,7 @@ const MoreInformaitonBlock: FC<Props> = ({ person, onClose }) => {
         <textarea name="description" readOnly value={person.description} />
       </div>
       <div className={styles.infoAdressWrapper}>
-        <span>Adress: {person.address.streetAddress}</span>
-        <span>City: {person.address.city}</span>
-        <span>State: {person.address.state}</span>
-        <span>ZIP: {person.address.zip}</span>
+        <span>Adress: {person.address}</span>
       </div>
     </div>
   );

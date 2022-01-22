@@ -115,7 +115,7 @@ const PersonTable: FC<Props> = ({
             tableHeadNames={tableHeadNames}
             tableSortKey={tableSortKey}
           />
-        {persons.searchLenght == 0 && <h4>Данные не найдены</h4>}
+        {persons.searchLenght == 0 && <h4>No data found</h4>}
       </div>
       {(pagination && persons.array.length !== 0 ? true : false) && (
         <PersonTableFooter

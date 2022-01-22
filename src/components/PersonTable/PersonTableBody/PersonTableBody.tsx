@@ -34,7 +34,7 @@ const PersonTableBody: FC<Props> = ({
   const setLoadingArr =()=> {
     const mockColums = []
     for (let i = 1; i < limit; i++) {
-      mockColums.push(<tr>
+      mockColums.push(<tr key={i}>
           <td>...</td>
           <td>...</td>
           <td>...</td>
@@ -90,7 +90,7 @@ const PersonTableBody: FC<Props> = ({
           :<>{setLoadingArr()}</>}
         </tbody>
       </table>
-      {isError&&<h4>Ошибка при загрузке</h4>}
+      {isError&&<h4>Load error</h4>}
     </div>
   );
 };
