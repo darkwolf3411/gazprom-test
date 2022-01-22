@@ -39,8 +39,12 @@
     }
 }
 .tableHeadWrapper{
-    &>tr>td{
+    td{
         cursor: pointer;
+    }
+    svg{
+        width: 17px;
+        height: 12px;
     }
 }
 .bodyBase{

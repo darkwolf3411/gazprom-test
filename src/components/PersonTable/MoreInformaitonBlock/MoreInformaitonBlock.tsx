@@ -1,6 +1,8 @@
 import React, { FC } from "react";
 import { IPerson } from "../../../models/Person";
 //@ts-ignore
+import {ReactComponent as CloseLogo} from '../../../assets/svg/x-svgrepo-com.svg';
+//@ts-ignore
 import styles from "./infoBlock.module.scss"
 
 interface Props {
@@ -18,7 +20,7 @@ const MoreInformaitonBlock: FC<Props> = ({ person, onClose }) => {
         <h4>
           Select Person: {person.firstName} {person.lastName}
         </h4>
-        <i onClick={onCloseHandler}>🞪</i>
+        <CloseLogo onClick={onCloseHandler} />
       </div>
       <div className={styles.infoDescriptionWrapper}>
         <span>Description:</span>

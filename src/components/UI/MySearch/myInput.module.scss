@@ -12,11 +12,10 @@
 }
 .search{
     position: relative;
-    &>i{
+    &>svg{
         cursor: pointer;
-        font-size: 20px;
         position: absolute;
-        top: 0px;
-        right: 7px;
+        top: 5px;
+        right: 4px;
     }
 }

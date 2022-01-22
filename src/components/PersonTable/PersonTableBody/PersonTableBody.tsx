@@ -3,7 +3,12 @@ import { IPerson } from "../../../models/Person";
 import { SortSettings } from "../PersonTable";
 import classNames from "classnames/bind";
 //@ts-ignore
+import {ReactComponent as UpArrow} from '../../../assets/svg/up-arrow-svgrepo-com.svg';
+//@ts-ignore
+import {ReactComponent as DownArrow} from '../../../assets/svg/down-arrow-svgrepo-com.svg';
+//@ts-ignore
 import styles from "./pTableBody.module.scss";
+
 
 interface Props extends React.TableHTMLAttributes<HTMLTableElement> {
   persons: IPerson[];
@@ -49,7 +54,7 @@ const PersonTableBody: FC<Props> = ({
   }
   const directionArrow = (index: number) => {
     if (sortSettings.sortName == tableSortKey[index]) {
-      return sortSettings.sortDirection ? "⏷" : "⏶";
+      return sortSettings.sortDirection ? <UpArrow/> : <DownArrow/>;
     }
   };
   let tBodyWrapper = cx({

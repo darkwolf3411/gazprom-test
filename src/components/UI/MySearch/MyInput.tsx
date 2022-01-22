@@ -1,6 +1,8 @@
 import React, { FC, useState } from "react";
 import classNames from "classnames/bind";
 //@ts-ignore
+import {ReactComponent as ClearLogo} from '../../../assets/svg/x-svgrepo-com.svg';
+//@ts-ignore
 import styles from "./myInput.module.scss";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -12,7 +14,6 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 let cx = classNames.bind(styles);
 
 const MyInput: FC<Props> = ({ onClear, inputSize, search, ...props }) => {
-  const [inputValue,setInputValue] = useState<string>()
   let className = cx({
     base: true,
     search: search,
@@ -35,7 +36,7 @@ const MyInput: FC<Props> = ({ onClear, inputSize, search, ...props }) => {
       {...props}
       className={styles.input}
       style={{fontSize: setInputSize()}} />
-      {search && <i onClick={onClearHandler}>🞪</i>}
+      {search && <ClearLogo onClick={onClearHandler} />}
     </div>
   );
 };
