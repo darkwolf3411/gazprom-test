@@ -59,15 +59,14 @@ const PersonTable: FC<Props> = ({
     sortDirection: true,
   });
 
-
-    const persons = usePersons(
-      data,
-      paginationSettings.limit,
-      paginationSettings.page,
-      searchValue,
-      sortSettings.sortName,
-      sortSettings.sortDirection
-    ) 
+  const persons = usePersons(
+    data,
+    paginationSettings.limit,
+    paginationSettings.page,
+    searchValue,
+    sortSettings.sortName,
+    sortSettings.sortDirection
+  );
 
   const searchHandler = (event: string) => {
     setSearchValue(event);
@@ -93,28 +92,42 @@ const PersonTable: FC<Props> = ({
     });
   };
 
-  const onSelectPersonHandler=(event: IPerson)=>{
+  const onSelectPersonHandler = (event: IPerson) => {
     setSelectPerson({
-      isSelect: selectPerson.person?.id==event.id?!selectPerson.isSelect:true,
+      isSelect:
+        selectPerson.person?.id == event.id ? !selectPerson.isSelect : true,
       person: event,
-    })
-  }
+    });
+  };
+
+  useEffect(()=>{
+    if (isLoading) {
+      setPaginationSettings({
+        ...paginationSettings,
+        page: 1
+      })
+    }
+  },[isLoading])
 
   return (
     <div className={styles.tableWrapper}>
-      <PersonTableHeader isLoading={isLoading} onSearch={searchHandler} tableName={tableName} />
+      <PersonTableHeader
+        isLoading={isLoading}
+        onSearch={searchHandler}
+        tableName={tableName}
+      />
       <div className={styles.tableBodyWrapper}>
-          <PersonTableBody
-            sortSettings={sortSettings}
-            isLoading={isLoading}
-            limit={paginationSettings.limit}
-            isError={isError}
-            onSelectSort={tableHeadHandler}
-            persons={persons.array}
-            onSelectPerson={onSelectPersonHandler}
-            tableHeadNames={tableHeadNames}
-            tableSortKey={tableSortKey}
-          />
+        <PersonTableBody
+          sortSettings={sortSettings}
+          isLoading={isLoading}
+          limit={paginationSettings.limit}
+          isError={isError}
+          onSelectSort={tableHeadHandler}
+          persons={persons.array}
+          onSelectPerson={onSelectPersonHandler}
+          tableHeadNames={tableHeadNames}
+          tableSortKey={tableSortKey}
+        />
         {persons.searchLenght == 0 && <h4>No data found</h4>}
       </div>
       {(pagination && persons.array.length !== 0 ? true : false) && (
@@ -126,10 +139,12 @@ const PersonTable: FC<Props> = ({
           onPageChange={changePageHandler}
         />
       )}
-      {selectPerson.isSelect && 
-      <MoreInformaitonBlock 
-      onClose={()=>setSelectPerson({...selectPerson,isSelect: false})} 
-      person={selectPerson.person!}/>}
+      {selectPerson.isSelect && (
+        <MoreInformaitonBlock
+          onClose={() => setSelectPerson({ ...selectPerson, isSelect: false })}
+          person={selectPerson.person!}
+        />
+      )}
     </div>
   );
 };
